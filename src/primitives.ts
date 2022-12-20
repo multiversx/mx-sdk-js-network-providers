@@ -1,10 +1,6 @@
 import * as bech32 from "bech32";
-import { IAddress } from "./interface";
-
-/**
- * The human-readable-part of the bech32 addresses.
- */
-const HRP = "erd";
+import { defaultProviderOptions } from "./config";
+import { IAddress, ProviderOptions } from "./interface";
 
 export class Address implements IAddress {
     private readonly value: string;
@@ -13,9 +9,10 @@ export class Address implements IAddress {
         this.value = value;
     }
 
-    static fromPubkey(pubkey: Buffer): IAddress {
+    static fromPubkey(pubkey: Buffer, options?: ProviderOptions): IAddress {
+        options = { ...defaultProviderOptions, ...options }
         let words = bech32.toWords(pubkey);
-        let address = bech32.encode(HRP, words);
+        let address = bech32.encode(options.addressPrefix, words);
         return new Address(address);
     }
 
