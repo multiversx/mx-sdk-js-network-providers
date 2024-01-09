@@ -133,3 +133,8 @@ export interface ITransaction {
 }
 
 export interface IAddress { bech32(): string; }
+
+export interface IHttpProvider {
+    get<T = any>(url: string): Promise<T>;
+    post<T = any>(url: string, payload: any): Promise<T>;
+}
